@@ -277,15 +277,27 @@ p { margin: 0; }
   border: 1px solid transparent;
   transition: transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
-.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; transition: transform .3s var(--ease); }
 .btn:active { transform: scale(0.97); }
+.btn:hover svg { transform: translateX(2px); }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--copper-bright), var(--copper));
   color: #14100a;
   box-shadow: 0 8px 24px -8px rgba(200,121,62,0.55);
 }
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .6s var(--ease);
+}
+.btn-primary:hover::before { transform: translateX(120%); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -8px rgba(200,121,62,0.65); }
 
 .btn-ghost {
@@ -459,6 +471,37 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   gap: 40px;
   align-items: center;
 }
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-copy > * {
+  opacity: 0;
+  animation: heroFadeUp .8s var(--ease) forwards;
+}
+.hero-copy > .hero-eyebrow  { animation-delay: .05s; }
+.hero-copy > .hero-name     { animation-delay: .15s; }
+.hero-copy > .hero-role     { animation-delay: .28s; }
+.hero-copy > .hero-desc     { animation-delay: .4s; }
+.hero-copy > .hero-actions  { animation-delay: .52s; }
+.hero-copy > .hero-social   { animation-delay: .64s; }
+
+.hero-visual {
+  opacity: 0;
+  animation: heroFadeUp 1s var(--ease) forwards;
+  animation-delay: .3s;
+}
+
+.hero-role .type-cursor {
+  display: inline-block;
+  width: 1px;
+  margin-left: 2px;
+  background: var(--cyan);
+  animation: caretBlink 1s step-end infinite;
+}
+@keyframes caretBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -565,6 +608,11 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   place-items: center;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  animation: portraitFloat 6s ease-in-out infinite;
+}
+@keyframes portraitFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 .portrait-placeholder {
   display: flex;
@@ -2773,8 +2821,8 @@ const CATEGORIES = [
     const sorted = [...TIMELINE].sort((a, b) => a.order - b.order);
     el.innerHTML = sorted
       .map(
-        (item) => `
-      <div class="timeline-item type-${item.type} reveal">
+        (item, i) => `
+      <div class="timeline-item type-${item.type} reveal" style="transition-delay:${i * 90}ms">
         <div class="timeline-period">${item.period} / ${item.type === "education" ? "Education" : "Experience"}</div>
         <div class="timeline-title">${item.title}</div>
         <div class="timeline-org">${item.org}</div>
@@ -2796,9 +2844,9 @@ const CATEGORIES = [
     return "status-" + status.toLowerCase().replace(/\s+/g, "-");
   }
 
-  function projectCard(p) {
+  function projectCard(p, i) {
     return `
-    <article class="project-card glass reveal" data-id="${p.id}">
+    <article class="project-card glass reveal" data-id="${p.id}" style="transition-delay:${(i % 9) * 55}ms">
       <div class="project-thumb">
         ${projectThumbSVG(p)}
         <span class="project-status ${statusClass(p.status)}">${p.status}</span>
@@ -2841,7 +2889,7 @@ const CATEGORIES = [
         </div>`;
       return;
     }
-    grid.innerHTML = list.map(projectCard).join("");
+    grid.innerHTML = list.map((p, i) => projectCard(p, i)).join("");
     initReveal();
   }
 
@@ -2988,6 +3036,52 @@ const CATEGORIES = [
     });
   }
 
+  /* ---------------- Hero role typewriter (cycles through the "|"-separated titles) ---------------- */
+  function startRoleTypewriter(roleParts) {
+    const el = document.getElementById("heroRole");
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion || roleParts.length <= 1) {
+      el.innerHTML = roleParts.map((r) => `<span>${r}</span>`).join('<span class="sep">/</span>');
+      return;
+    }
+
+    let partIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    const TYPE_MS = 45;
+    const DELETE_MS = 28;
+    const HOLD_MS = 1600;
+
+    el.innerHTML = `<span class="type-text"></span><span class="type-cursor"></span>`;
+    const textEl = el.querySelector(".type-text");
+
+    function tick() {
+      const current = roleParts[partIndex];
+      if (!deleting) {
+        charIndex++;
+        textEl.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(tick, HOLD_MS);
+          return;
+        }
+        setTimeout(tick, TYPE_MS);
+      } else {
+        charIndex--;
+        textEl.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          partIndex = (partIndex + 1) % roleParts.length;
+          setTimeout(tick, 400);
+          return;
+        }
+        setTimeout(tick, DELETE_MS);
+      }
+    }
+    setTimeout(tick, TYPE_MS);
+  }
+
   /* ---------------- Profile bindings (hero, about, contact, footer) ---------------- */
   function bindProfile() {
     document.querySelectorAll("[data-bind='year']").forEach((el) => (el.textContent = new Date().getFullYear()));
@@ -2996,7 +3090,7 @@ const CATEGORIES = [
     document.title = PROFILE.name + " — " + PROFILE.title.split("|")[0].trim();
 
     const roleParts = PROFILE.title.split("|").map((s) => s.trim());
-    document.getElementById("heroRole").innerHTML = roleParts.map((r) => `<span>${r}</span>`).join('<span class="sep">/</span>');
+    startRoleTypewriter(roleParts);
 
     document.getElementById("heroDesc").textContent = PROFILE.tagline;
     document.getElementById("resumeBtn").setAttribute("href", PROFILE.resumeUrl);

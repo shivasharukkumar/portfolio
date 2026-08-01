@@ -259,15 +259,27 @@ p { margin: 0; }
   border: 1px solid transparent;
   transition: transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
 }
-.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; transition: transform .3s var(--ease); }
 .btn:active { transform: scale(0.97); }
+.btn:hover svg { transform: translateX(2px); }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--copper-bright), var(--copper));
   color: #14100a;
   box-shadow: 0 8px 24px -8px rgba(200,121,62,0.55);
 }
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .6s var(--ease);
+}
+.btn-primary:hover::before { transform: translateX(120%); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -8px rgba(200,121,62,0.65); }
 
 .btn-ghost {
@@ -441,6 +453,37 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   gap: 40px;
   align-items: center;
 }
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-copy > * {
+  opacity: 0;
+  animation: heroFadeUp .8s var(--ease) forwards;
+}
+.hero-copy > .hero-eyebrow  { animation-delay: .05s; }
+.hero-copy > .hero-name     { animation-delay: .15s; }
+.hero-copy > .hero-role     { animation-delay: .28s; }
+.hero-copy > .hero-desc     { animation-delay: .4s; }
+.hero-copy > .hero-actions  { animation-delay: .52s; }
+.hero-copy > .hero-social   { animation-delay: .64s; }
+
+.hero-visual {
+  opacity: 0;
+  animation: heroFadeUp 1s var(--ease) forwards;
+  animation-delay: .3s;
+}
+
+.hero-role .type-cursor {
+  display: inline-block;
+  width: 1px;
+  margin-left: 2px;
+  background: var(--cyan);
+  animation: caretBlink 1s step-end infinite;
+}
+@keyframes caretBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -547,6 +590,11 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   place-items: center;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  animation: portraitFloat 6s ease-in-out infinite;
+}
+@keyframes portraitFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 .portrait-placeholder {
   display: flex;

@@ -179,8 +179,8 @@
     const sorted = [...TIMELINE].sort((a, b) => a.order - b.order);
     el.innerHTML = sorted
       .map(
-        (item) => `
-      <div class="timeline-item type-${item.type} reveal">
+        (item, i) => `
+      <div class="timeline-item type-${item.type} reveal" style="transition-delay:${i * 90}ms">
         <div class="timeline-period">${item.period} / ${item.type === "education" ? "Education" : "Experience"}</div>
         <div class="timeline-title">${item.title}</div>
         <div class="timeline-org">${item.org}</div>
@@ -202,9 +202,9 @@
     return "status-" + status.toLowerCase().replace(/\s+/g, "-");
   }
 
-  function projectCard(p) {
+  function projectCard(p, i) {
     return `
-    <article class="project-card glass reveal" data-id="${p.id}">
+    <article class="project-card glass reveal" data-id="${p.id}" style="transition-delay:${(i % 9) * 55}ms">
       <div class="project-thumb">
         ${projectThumbSVG(p)}
         <span class="project-status ${statusClass(p.status)}">${p.status}</span>
@@ -247,7 +247,7 @@
         </div>`;
       return;
     }
-    grid.innerHTML = list.map(projectCard).join("");
+    grid.innerHTML = list.map((p, i) => projectCard(p, i)).join("");
     initReveal();
   }
 
@@ -394,6 +394,52 @@
     });
   }
 
+  /* ---------------- Hero role typewriter (cycles through the "|"-separated titles) ---------------- */
+  function startRoleTypewriter(roleParts) {
+    const el = document.getElementById("heroRole");
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduceMotion || roleParts.length <= 1) {
+      el.innerHTML = roleParts.map((r) => `<span>${r}</span>`).join('<span class="sep">/</span>');
+      return;
+    }
+
+    let partIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    const TYPE_MS = 45;
+    const DELETE_MS = 28;
+    const HOLD_MS = 1600;
+
+    el.innerHTML = `<span class="type-text"></span><span class="type-cursor"></span>`;
+    const textEl = el.querySelector(".type-text");
+
+    function tick() {
+      const current = roleParts[partIndex];
+      if (!deleting) {
+        charIndex++;
+        textEl.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(tick, HOLD_MS);
+          return;
+        }
+        setTimeout(tick, TYPE_MS);
+      } else {
+        charIndex--;
+        textEl.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          partIndex = (partIndex + 1) % roleParts.length;
+          setTimeout(tick, 400);
+          return;
+        }
+        setTimeout(tick, DELETE_MS);
+      }
+    }
+    setTimeout(tick, TYPE_MS);
+  }
+
   /* ---------------- Profile bindings (hero, about, contact, footer) ---------------- */
   function bindProfile() {
     document.querySelectorAll("[data-bind='year']").forEach((el) => (el.textContent = new Date().getFullYear()));
@@ -402,7 +448,7 @@
     document.title = PROFILE.name + " — " + PROFILE.title.split("|")[0].trim();
 
     const roleParts = PROFILE.title.split("|").map((s) => s.trim());
-    document.getElementById("heroRole").innerHTML = roleParts.map((r) => `<span>${r}</span>`).join('<span class="sep">/</span>');
+    startRoleTypewriter(roleParts);
 
     document.getElementById("heroDesc").textContent = PROFILE.tagline;
     document.getElementById("resumeBtn").setAttribute("href", PROFILE.resumeUrl);
