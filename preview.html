@@ -168,6 +168,40 @@ body::after {
 .bg-decor .tick { stroke: var(--border-strong); stroke-width: 1; }
 .bg-decor .crosshair { stroke: var(--border-strong); stroke-width: 1; }
 
+.bg-decor .tick-ring {
+  transform-origin: 200px 200px;
+  animation: bgSpin 100s linear infinite;
+}
+.bg-decor .sweep-arc {
+  transform-origin: 200px 200px;
+  animation: bgSpin 14s linear infinite;
+}
+.bg-decor .sweep-arc path {
+  fill: var(--cyan);
+  opacity: .06;
+}
+@keyframes bgSpin { to { transform: rotate(360deg); } }
+
+.bg-decor .planet-orbit { transform-origin: 200px 200px; }
+.bg-decor .orbit-copper { animation: bgSpin 34s linear infinite; }
+.bg-decor .orbit-cyan { animation: bgSpin 18s linear infinite reverse; }
+.bg-decor .planet {
+  filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 10px currentColor);
+  animation: planetPulse 2.4s ease-in-out infinite;
+}
+.bg-decor .planet-copper { fill: var(--copper-bright); color: var(--copper-bright); }
+.bg-decor .planet-cyan { fill: var(--cyan); color: var(--cyan); animation-delay: 1.1s; }
+@keyframes planetPulse {
+  0%, 100% { opacity: .55; r: 4; }
+  50% { opacity: 1; r: 5.5; }
+}
+
+body::after { animation: washBreathe 16s ease-in-out infinite; }
+@keyframes washBreathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .75; }
+}
+
 /* Layer 4: subtle grain for a tactile, non-flat surface (kept very low opacity) */
 body .grain {
   position: fixed;
@@ -1227,6 +1261,16 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
     <circle class="ring" cx="200" cy="200" r="30"/>
     <line class="crosshair" x1="200" y1="0" x2="200" y2="400"/>
     <line class="crosshair" x1="0" y1="200" x2="400" y2="200"/>
+    <g class="sweep-arc">
+      <path d="M 200 200 L 200 10 A 190 190 0 0 1 331.4 68.6 Z" />
+    </g>
+    <g class="planet-orbit orbit-copper">
+      <circle class="planet planet-copper" cx="350" cy="200" r="5"/>
+    </g>
+    <g class="planet-orbit orbit-cyan">
+      <circle class="planet planet-cyan" cx="270" cy="200" r="4"/>
+    </g>
+    <g class="tick-ring">
       <line class="tick" x1="378.0" y1="200.0" x2="390.0" y2="200.0"/>
       <line class="tick" x1="375.3" y1="230.9" x2="387.1" y2="233.0"/>
       <line class="tick" x1="367.3" y1="260.9" x2="378.5" y2="265.0"/>
@@ -1263,6 +1307,7 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
       <line class="tick" x1="354.2" y1="111.0" x2="364.5" y2="105.0"/>
       <line class="tick" x1="367.3" y1="139.1" x2="378.5" y2="135.0"/>
       <line class="tick" x1="375.3" y1="169.1" x2="387.1" y2="167.0"/>
+      </g>
   </svg>
 </div>
 <div class="grain" aria-hidden="true"></div>
