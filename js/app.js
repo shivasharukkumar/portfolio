@@ -113,6 +113,7 @@
   const THUMB_ICONS = {
     bridge: "bridge", maze: "maze", oled: "chip", games: "gamepad",
     ride: "car", hospital: "clipboard", pharmacy: "pill", predictive: "trend",
+    sinthana: "poll",
   };
   function projectThumbSVG(project) {
     const iconKey = THUMB_ICONS[project.image] || "cpu";
