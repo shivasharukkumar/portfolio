@@ -286,11 +286,20 @@
   function galleryBlock(p) {
     if (p.gallery && p.gallery.length) {
       const imgs = p.gallery
-        .map((src, i) => `<img src="${src}" alt="${p.title} photo ${i + 1}" loading="lazy" class="gallery-img" />`)
+        .map((src, i) => `<img src="${src}" alt="${p.title} photo ${i + 1}" loading="lazy" class="gallery-img" onerror="this.style.display='none'" />`)
         .join("");
       return detailBlock("Gallery", `<div class="gallery-grid">${imgs}</div>`);
     }
     return detailBlock("Gallery", `<div class="gallery-placeholder">${icon("image")}<div style="margin-top:10px">Editable — add project photos here</div></div>`);
+  }
+
+  // Optional rich fields — only rendered when a project actually provides them,
+  // so simpler project entries stay exactly as before.
+  function optP(p, key, label) {
+    return p[key] ? detailBlock(label, `<p>${p[key]}</p>`) : "";
+  }
+  function optList(p, key, label) {
+    return p[key] && p[key].length ? listBlock(label, p[key]) : "";
   }
 
   function renderProjectDetail(id) {
@@ -316,15 +325,27 @@
       </div>
 
       ${detailBlock("Overview", `<p>${p.overview}</p>`)}
+      ${optP(p, "objective", "Objective")}
       ${detailBlock("Problem Statement", `<p>${p.problem}</p>`)}
       ${detailBlock("Solution", `<p>${p.solution}</p>`)}
+      ${optP(p, "architecture", "Architecture")}
+      ${optList(p, "workflow", "Workflow")}
       ${listBlock("Key Features", p.features)}
+      ${optList(p, "questionTypes", "Question Types")}
+      ${optList(p, "games", "Games Included")}
+      ${optList(p, "roles", "User Roles")}
       ${listBlock("Hardware Used", p.hardware)}
       ${listBlock("Software Used", p.software)}
       ${detailBlock("How It Works", `<p>${p.howItWorks}</p>`)}
+      ${optP(p, "scoringSystem", "Scoring System")}
+      ${optP(p, "accessControl", "Access Control")}
+      ${optList(p, "monitoringParameters", "Monitoring Parameters")}
+      ${optList(p, "alertConditions", "Alert Conditions")}
+      ${optList(p, "algorithms", "Algorithms Used")}
       ${galleryBlock(p)}
       ${detailBlock("Demo Video", `<div class="video-placeholder">${icon("play")}<div>Editable — embed a demo video link here</div></div>`)}
       ${detailBlock("Challenges", `<p>${p.challenges}</p>`)}
+      ${optP(p, "learning", "What I Learned")}
       ${detailBlock("Future Improvements", `<p>${p.future}</p>`)}
     `;
     overlay.classList.add("is-open");
@@ -404,7 +425,14 @@
 
     if (PROFILE.photo) {
       const frame = document.getElementById("portraitFrame");
-      frame.innerHTML = `<img src="${PROFILE.photo}" alt="${PROFILE.name}" loading="lazy" />`;
+      const original = frame.innerHTML;
+      const img = document.createElement("img");
+      img.src = PROFILE.photo;
+      img.alt = PROFILE.name;
+      img.loading = "lazy";
+      img.onerror = () => { frame.innerHTML = original; };
+      frame.innerHTML = "";
+      frame.appendChild(img);
     }
   }
 

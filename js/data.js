@@ -446,7 +446,7 @@ const PROJECTS = [
       "WebSockets",
     ],
     image: "games",
-    thumbnail: "images\projects\brave_screenshot_2vs2multiplayers.netlify.app.png",
+    thumbnail: "images/projects/brave_screenshot_2vs2multiplayers.netlify.app.png",
     gallery: [],
 
     shortDescription:
@@ -635,8 +635,8 @@ const PROJECTS = [
       "Role-Based Access",
     ],
     image: "hospital",
-    thumbnail: "images\projects\brave_screenshot_muruganhospital.netlify.app.png",
-    gallery: ["images\projects\Screenshot 2026-08-01 212041.png","images\projects\Screenshot 2026-08-01 211939.png"],
+    thumbnail: "images/projects/brave_screenshot_muruganhospital.netlify.app.png",
+    gallery: ["images/projects/Screenshot%202026-08-01%20212041.png","images/projects/Screenshot%202026-08-01%20211939.png"],
 
     shortDescription:
       "A digital hospital prescription management system designed to register patients, maintain prescription history, and provide role-based access for receptionists and doctors.",
@@ -730,8 +730,8 @@ const PROJECTS = [
       "Inventory Management",
     ],
     image: "pharmacy",
-    thumbnail: ""images\projects\brave_screenshot_muruganhospital.netlify.app.png"",
-    gallery: ["images\projects\Screenshot 2026-08-01 211939.png"],
+    thumbnail: "images/projects/brave_screenshot_muruganhospital.netlify.app.png",
+    gallery: ["images/projects/Screenshot%202026-08-01%20211939.png"],
 
     shortDescription:
       "A pharmacy billing and inventory management system designed to simplify medicine stock tracking, bill generation, and sales management.",
@@ -911,8 +911,8 @@ const PROJECTS = [
       "Firebase Auth",
     ],
     image: "sinthana",
-    thumbnail: "images\projects\Screenshot 2026-08-01 211532.png",
-    gallery: ["images\projects\Screenshot 2026-08-01 211702.png"],
+    thumbnail: "images/projects/Screenshot%202026-08-01%20211532.png",
+    gallery: ["images/projects/Screenshot%202026-08-01%20211702.png"],
 
     shortDescription:
       "A real-time, Mentimeter-style classroom polling platform where hosts run interactive questions while students join using a code or QR and answer instantly from their devices.",
