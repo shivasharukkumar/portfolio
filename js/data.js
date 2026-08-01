@@ -14,13 +14,13 @@
    ============================================================ */
 
 const PROFILE = {
-  name: "Shiva Sharuk Kumar",
+  name: "Shiva Sharuk Kumar S",
   title: "Mechatronics Engineering Student | Robotics & Automation Enthusiast | Developer",
   tagline: "I build innovative projects that combine mechanical systems, electronics, automation, IoT, and software to solve real-world problems.",
-  photo: "", // EDITABLE — path to your photo, e.g. "images/profile.jpg". Leave blank to keep the placeholder.
-  email: "your.email@example.com",           // EDITABLE
-  github: "https://github.com/yourusername", // EDITABLE
-  linkedin: "https://linkedin.com/in/yourusername", // EDITABLE
+  photo: "images/profile.png", // EDITABLE — path to your photo, e.g. "images/profile.jpg". Leave blank to keep the placeholder.
+  email: "rushivasharuk@gmail.com",           // EDITABLE
+  github: "https://github.com/shivasharukkumar", // EDITABLE
+  linkedin: "https://www.linkedin.com/in/shiva-sharuk-kumar-s-321579252/", // EDITABLE
   resumeUrl: "#",                             // EDITABLE — link to your resume PDF
   location: "Tamil Nadu, India",              // EDITABLE
   about: `I'm a Mechatronics Engineering student who likes taking a problem apart until
@@ -53,7 +53,7 @@ const SKILLS = [
   {
     category: "Embedded & Electronics",
     icon: "cpu",
-    items: ["ESP32", "STM32", "Raspberry Pi", "Arduino", "Sensors", "Embedded Systems"],
+    items: ["ESP32", "STM32", "IOT", "Arduino", "Sensors", "Embedded Systems"],
   },
   {
     category: "Automation",
@@ -81,17 +81,17 @@ const TIMELINE = [
     order: 1,
     type: "education",
     title: "Higher Secondary Education", // EDITABLE
-    org: "Your School Name",             // EDITABLE
-    period: "20XX – 20XX",               // EDITABLE
-    description: "Completed higher secondary education with a focus on Mathematics and Physics.", // EDITABLE
+    org: "S A V Balakrishna Matriculation Higher Secondary School",             // EDITABLE
+    period: "2020 – 2024",               // EDITABLE
+    description: "Completed higher secondary education with a focus on Mathematics, Chemistry, Computer Science and Physics.", // EDITABLE
   },
   {
     id: "degree",
     order: 2,
     type: "education",
     title: "B.E. Mechatronics Engineering",
-    org: "Your College / University Name", // EDITABLE
-    period: "20XX – 20XX (Ongoing)",        // EDITABLE
+    org: "Kumaraguru College Of technology / Anna University", // EDITABLE
+    period: "2024 – 2028 (Ongoing)",        // EDITABLE
     description: "Currently pursuing a B.E. in Mechatronics Engineering, covering mechanical design, control systems, electronics, embedded programming, and automation.", // EDITABLE
   },
   {
@@ -99,16 +99,15 @@ const TIMELINE = [
     order: 3,
     type: "experience",
     title: "Engineering Intern",
-    org: "Maha Precision Fit Limited",
-    period: "EDITABLE — add dates",
-    description: "Hands-on exposure to press tools & dies, manufacturing processes, quality inspection, plant layout, safety procedures, and CMM/inspection systems, with a focus on identifying automation opportunities on the shop floor.",
+    org: "Balaj Engineering",
+    period: "June",
+    description: "Hands-on exposure to press tools & dies, manufacturing processes, quality inspection, plant layout, safety procedures, with a focus on identifying automation opportunities on the shop floor.",
     highlights: [
       "Press tools and dies",
       "Manufacturing processes",
       "Quality inspection",
       "Plant layout",
       "Safety procedures",
-      "CMM and inspection systems",
       "Automation opportunities in manufacturing",
     ],
   },
