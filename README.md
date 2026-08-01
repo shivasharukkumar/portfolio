@@ -9,12 +9,46 @@ Open `index.html` in a browser, or deploy the folder as-is to GitHub Pages, Netl
 index.html          Page markup for every section (hero, about, projects, skills, contact, etc.)
 404.html             Standalone not-found page for hosts that support a custom 404 (e.g. GitHub Pages)
 css/style.css        All styling — design tokens (colors/fonts) live at the top as CSS variables
-js/data.js           ALL editable content: your profile, skills, timeline, achievements, and projects
+js/data.js           ALL editable content: your profile, skills, timeline, and projects
 js/icons.js          Small hand-built icon set (no external icon font dependency)
 js/app.js            Rendering logic — reads data.js and builds the page. You shouldn't need to
                      touch this file just to add/edit content.
 favicon.svg          Site icon
 ```
+
+## How to add photos
+
+The site ships with generated schematic placeholders (no broken image icons) so it looks
+finished before you add real photos. There are three places to add them, all in `js/data.js`:
+
+**1. Your profile photo (hero section)**
+- Put your photo in the `images/` folder, e.g. `images/profile.jpg`
+- In `js/data.js`, set: `photo: "images/profile.jpg"` inside the `PROFILE` object
+- Square-ish photos (close to 1:1) look best — the frame crops to fill it
+
+**2. A project's card thumbnail**
+- Put the image in `images/projects/`, e.g. `images/projects/maze-solver.jpg`
+- Find that project in the `PROJECTS` array in `js/data.js` and set:
+  `thumbnail: "images/projects/maze-solver.jpg"`
+- Landscape photos around 16:10 work best (that's the card's crop ratio)
+- Leave `thumbnail: ""` to keep the generated schematic icon for that project
+
+**3. A project's detail-page gallery**
+- Add multiple images to `images/projects/`, e.g. `maze-solver-1.jpg`, `maze-solver-2.jpg`
+- On that same project, set:
+  ```js
+  gallery: ["images/projects/maze-solver-1.jpg", "images/projects/maze-solver-2.jpg"]
+  ```
+- They'll render as a photo grid on the project's detail page instead of the placeholder
+
+**Notes**
+- Paths are relative to `index.html`, so keep images inside this folder (or a subfolder) —
+  don't reference files elsewhere on your computer.
+- If a path is wrong/missing, the thumbnail automatically falls back to the generated icon
+  instead of showing a broken image.
+- Compress photos before adding them (aim under ~300–500 KB each) so the site stays fast —
+  tools like squoosh.app or TinyPNG work well.
+- Supported formats: `.jpg`, `.png`, `.webp` (webp gives the smallest file size for the same quality).
 
 ## How to edit your content
 
@@ -23,7 +57,6 @@ Everything you'll want to change day-to-day lives in **`js/data.js`**:
 - `PROFILE` — your name, title, tagline, email, GitHub/LinkedIn links, resume link, about text
 - `SKILLS` — skill categories and chips
 - `TIMELINE` — education + experience entries (shown in the About section timeline)
-- `ACHIEVEMENTS` — certifications, workshops, hackathons, awards (placeholders are clearly marked)
 - `PROJECTS` — every project card **and** its detail page content
 - `CATEGORIES` — the filter chips shown above the project grid
 

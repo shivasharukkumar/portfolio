@@ -3,7 +3,7 @@
    ------------------------------------------------------------
    This is the single source of truth for every piece of
    content on the site: projects, skills, timeline, internships,
-   achievements, and profile info. The UI (js/app.js) never
+   and profile info. The UI (js/app.js) never
    hardcodes content — it just reads these objects and renders
    them. To add / edit / remove a project, edit the PROJECTS
    array below. Nothing else needs to change.
@@ -17,6 +17,7 @@ const PROFILE = {
   name: "Shiva Sharuk Kumar",
   title: "Mechatronics Engineering Student | Robotics & Automation Enthusiast | Developer",
   tagline: "I build innovative projects that combine mechanical systems, electronics, automation, IoT, and software to solve real-world problems.",
+  photo: "", // EDITABLE — path to your photo, e.g. "images/profile.jpg". Leave blank to keep the placeholder.
   email: "your.email@example.com",           // EDITABLE
   github: "https://github.com/yourusername", // EDITABLE
   linkedin: "https://linkedin.com/in/yourusername", // EDITABLE
@@ -113,35 +114,7 @@ const TIMELINE = [
   },
 ];
 
-/* ---------- ACHIEVEMENTS / CERTIFICATIONS ---------- */
-/* Empty / placeholder entries are clearly marked so no false claims are shown.
-   Delete the placeholder and add real entries as you earn them. */
-const ACHIEVEMENTS = [
-  {
-    type: "placeholder",
-    category: "Certifications",
-    title: "Add your certifications here",
-    detail: "e.g. online courses, PLC/automation certifications, embedded systems courses.",
-  },
-  {
-    type: "placeholder",
-    category: "Workshops",
-    title: "Add workshops attended here",
-    detail: "e.g. robotics workshops, IoT bootcamps, hardware design sessions.",
-  },
-  {
-    type: "placeholder",
-    category: "Hackathons & Competitions",
-    title: "Add hackathons / competitions here",
-    detail: "e.g. results, team projects, or ongoing participation.",
-  },
-  {
-    type: "placeholder",
-    category: "Publications & Awards",
-    title: "Add publications or awards here",
-    detail: "e.g. papers, patents, recognitions.",
-  },
-];
+
 
 /* ---------- PROJECTS ---------- */
 /* status: "Completed" | "In Progress" | "Prototype" | "Concept"
@@ -158,6 +131,8 @@ const PROJECTS = [
     status: "In Progress", // EDITABLE
     tech: ["ESP32", "Sensors", "C++", "IoT Dashboard"],
     image: "bridge",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/bridge.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/bridge-1.jpg", "images/projects/bridge-2.jpg"]
     shortDescription: "A sensor-based structural health monitoring system that tracks a bridge's condition in real time and flags anomalies before they become failures.",
     overview: "EDITABLE — describe what this system monitors (e.g. strain, vibration, tilt, load) and why it matters for structural safety.",
     problem: "EDITABLE — the real-world problem this addresses (e.g. delayed detection of structural stress/fatigue in bridges).",
@@ -183,6 +158,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["Arduino", "IR/Ultrasonic Sensors", "C++"],
     image: "maze",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/maze.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/maze-1.jpg", "images/projects/maze-2.jpg"]
     shortDescription: "An autonomous robot that navigates and solves a maze using sensor-based wall/path detection and a pathfinding algorithm.",
     overview: "EDITABLE — describe the robot's chassis, sensing approach, and the maze-solving strategy used.",
     problem: "EDITABLE — the challenge of autonomous navigation without human control.",
@@ -208,6 +185,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["ESP32", "OLED Display", "C++", "Wi-Fi"],
     image: "oled",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/oled.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/oled-1.jpg", "images/projects/oled-2.jpg"]
     shortDescription: "A compact desktop assistant built on ESP32 that displays live information (time, notifications, sensor data) on an OLED screen.",
     overview: "EDITABLE — describe what information the assistant displays and its use case.",
     problem: "EDITABLE — why a small always-on display assistant is useful.",
@@ -233,6 +212,8 @@ const PROJECTS = [
     status: "In Progress", // EDITABLE
     tech: ["JavaScript", "Node.js", "React", "WebSockets"],
     image: "games",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/games.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/games-1.jpg", "images/projects/games-2.jpg"]
     shortDescription: "A web platform where users can join rooms and play simple multiplayer games together in real time.",
     overview: "EDITABLE — describe the platform: what games, how rooms/matchmaking work.",
     problem: "EDITABLE — the need this platform fulfills (casual real-time multiplayer play in-browser).",
@@ -258,6 +239,8 @@ const PROJECTS = [
     status: "In Progress", // EDITABLE
     tech: ["Flutter", "Dart", "Firebase/API"],
     image: "ride",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/ride.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/ride-1.jpg", "images/projects/ride-2.jpg"]
     shortDescription: "A ride-booking mobile app concept allowing users to request rides, track drivers, and manage trips.",
     overview: "EDITABLE — describe app scope: rider flow, driver flow, or both.",
     problem: "EDITABLE — the transportation/booking problem being addressed.",
@@ -283,6 +266,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["Web Stack", "Database"],
     image: "hospital",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/hospital.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/hospital-1.jpg", "images/projects/hospital-2.jpg"]
     shortDescription: "A system for managing patient prescriptions digitally — reducing manual paperwork and prescription errors.",
     overview: "EDITABLE — describe the system's scope (doctor, pharmacist, patient views).",
     problem: "EDITABLE — issues with manual/paper-based prescription handling.",
@@ -308,6 +293,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["Web Stack", "Database"],
     image: "pharmacy",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/pharmacy.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/pharmacy-1.jpg", "images/projects/pharmacy-2.jpg"]
     shortDescription: "A billing system for pharmacies to manage inventory, generate bills, and track sales.",
     overview: "EDITABLE — describe the system's core purpose and users.",
     problem: "EDITABLE — the inefficiency in manual pharmacy billing/inventory tracking.",
@@ -333,6 +320,8 @@ const PROJECTS = [
     status: "Concept", // EDITABLE
     tech: ["Python", "Machine Learning", "Sensors"],
     image: "predictive",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/predictive.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/predictive-1.jpg", "images/projects/predictive-2.jpg"]
     shortDescription: "A system that predicts equipment failure in advance using sensor data and machine learning, reducing unplanned downtime.",
     overview: "EDITABLE — describe the target equipment/process and the data used to predict failure.",
     problem: "EDITABLE — the cost of unplanned downtime / reactive maintenance.",
@@ -358,6 +347,8 @@ const PROJECTS = [
     status: "Completed",
     tech: ["React", "Vite", "Tailwind CSS", "Socket.IO", "Node.js", "Express", "PostgreSQL", "Firebase Auth"],
     image: "sinthana",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/sinthana.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/sinthana-1.jpg", "images/projects/sinthana-2.jpg"]
     shortDescription: "A real-time, Mentimeter-style classroom polling platform — hosts run live multiple-choice, poll, true/false, rating, word-cloud, and Q&A questions while students join by code or QR and answer instantly from their phones.",
     overview: "\"Sinthana\" (சிந்தனை, Tamil for \"thought\") is a full-stack live audience-response app built from scratch: a React/Vite client for hosts and students, and a Node/Express/Socket.IO backend backed by PostgreSQL, with Google Sign-In through Firebase so every answer can be traced back to a named participant.",
     problem: "Classroom engagement tools like Mentimeter cover this workflow well but are closed, paid platforms. The goal was to build the same live-polling loop — host creates a question, a room full of students answer in real time, results appear instantly — end-to-end myself: authentication, real-time transport, scoring, and the database schema behind it.",

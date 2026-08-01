@@ -1,7 +1,7 @@
 /* ============================================================
    APP LOGIC
    Reads content from data.js (PROFILE, SKILLS, TIMELINE,
-   ACHIEVEMENTS, PROJECTS, CATEGORIES) and icons from icons.js.
+   PROJECTS, CATEGORIES) and icons from icons.js.
    This file only renders — no content should be hardcoded here.
    ============================================================ */
 
@@ -62,7 +62,7 @@
   }
 
   function updateActiveLink() {
-    const sections = ["home", "about", "projects", "skills", "experience", "achievements", "contact"];
+    const sections = ["home", "about", "projects", "skills", "experience", "contact"];
     let current = sections[0];
     for (const id of sections) {
       const el = document.getElementById(id);
@@ -116,6 +116,13 @@
     sinthana: "poll",
   };
   function projectThumbSVG(project) {
+    if (project.thumbnail) {
+      return `<img src="${project.thumbnail}" alt="${project.title} thumbnail" loading="lazy" onerror="this.closest('.project-thumb, .detail-hero-thumb').innerHTML = window.__fallbackThumb('${project.id}')" />`;
+    }
+    return buildGeneratedThumb(project);
+  }
+
+  function buildGeneratedThumb(project) {
     const iconKey = THUMB_ICONS[project.image] || "cpu";
     // deterministic-ish gradient angle from id so cards feel distinct, not random
     let hash = 0;
@@ -143,6 +150,11 @@
       </g>
     </svg>`;
   }
+
+  window.__fallbackThumb = function (id) {
+    const proj = PROJECTS.find((p) => p.id === id);
+    return proj ? buildGeneratedThumb(proj) : "";
+  };
 
   /* ---------------- Skills ---------------- */
   function renderSkills() {
@@ -181,24 +193,6 @@
       </div>`
       )
       .join("");
-  }
-
-  /* ---------------- Achievements ---------------- */
-  function renderAchievements() {
-    const el = document.getElementById("achievementsGrid");
-    const catIcon = { Certifications: "award", Workshops: "layers", "Hackathons & Competitions": "trend", "Publications & Awards": "award" };
-    el.innerHTML = ACHIEVEMENTS.map(
-      (a, i) => `
-      <div class="achievement-card glass reveal" style="transition-delay:${i * 60}ms">
-        <div class="achievement-icon">${icon(catIcon[a.category] || "award")}</div>
-        <div>
-          <div class="achievement-category">${a.category}</div>
-          <div class="achievement-title">${a.title}</div>
-          <div class="achievement-detail">${a.detail}</div>
-          ${a.type === "placeholder" ? `<span class="placeholder-badge">Editable — add real entry</span>` : ""}
-        </div>
-      </div>`
-    ).join("");
   }
 
   /* ---------------- Projects: grid, filters, search ---------------- */
@@ -289,6 +283,16 @@
     return detailBlock(title, `<ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul>`);
   }
 
+  function galleryBlock(p) {
+    if (p.gallery && p.gallery.length) {
+      const imgs = p.gallery
+        .map((src, i) => `<img src="${src}" alt="${p.title} photo ${i + 1}" loading="lazy" class="gallery-img" />`)
+        .join("");
+      return detailBlock("Gallery", `<div class="gallery-grid">${imgs}</div>`);
+    }
+    return detailBlock("Gallery", `<div class="gallery-placeholder">${icon("image")}<div style="margin-top:10px">Editable — add project photos here</div></div>`);
+  }
+
   function renderProjectDetail(id) {
     const overlay = document.getElementById("detailOverlay");
     const p = PROJECTS.find((x) => x.id === id);
@@ -318,7 +322,7 @@
       ${listBlock("Hardware Used", p.hardware)}
       ${listBlock("Software Used", p.software)}
       ${detailBlock("How It Works", `<p>${p.howItWorks}</p>`)}
-      ${detailBlock("Gallery", `<div class="gallery-placeholder">${icon("image")}<div style="margin-top:10px">Editable — add project photos here</div></div>`)}
+      ${galleryBlock(p)}
       ${detailBlock("Demo Video", `<div class="video-placeholder">${icon("play")}<div>Editable — embed a demo video link here</div></div>`)}
       ${detailBlock("Challenges", `<p>${p.challenges}</p>`)}
       ${detailBlock("Future Improvements", `<p>${p.future}</p>`)}
@@ -397,6 +401,11 @@
       .join("");
 
     document.getElementById("footerTagline").textContent = PROFILE.tagline;
+
+    if (PROFILE.photo) {
+      const frame = document.getElementById("portraitFrame");
+      frame.innerHTML = `<img src="${PROFILE.photo}" alt="${PROFILE.name}" loading="lazy" />`;
+    }
   }
 
   /* ---------------- Init ---------------- */
@@ -408,7 +417,6 @@
     initNav();
     renderSkills();
     renderTimeline();
-    renderAchievements();
     renderFilterChips();
     renderProjects();
     initProjectSearch();

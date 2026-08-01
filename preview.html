@@ -44,12 +44,12 @@
   --cyan-dim: #3ba597;
   --danger: #e8636b;
 
-  --grid-line: rgba(233, 238, 246, 0.05);
-  --grid-line-strong: rgba(233, 238, 246, 0.09);
-  --wash-a: rgba(200, 121, 62, 0.13);
-  --wash-b: rgba(94, 234, 212, 0.09);
-  --decor-opacity: 0.5;
-  --noise-opacity: 0.05;
+  --grid-line: rgba(233, 238, 246, 0.04);
+  --grid-line-strong: rgba(233, 238, 246, 0.07);
+  --wash-a: rgba(200, 121, 62, 0.07);
+  --wash-b: rgba(94, 234, 212, 0.05);
+  --decor-opacity: 0.22;
+  --noise-opacity: 0.025;
   --noise-blend: overlay;
 
   --font-display: 'Space Grotesk', sans-serif;
@@ -83,12 +83,12 @@ html[data-theme="light"] {
   --cyan-dim: #0f6259;
   --danger: #c53c46;
 
-  --grid-line: rgba(35, 28, 18, 0.07);
-  --grid-line-strong: rgba(35, 28, 18, 0.12);
-  --wash-a: rgba(184, 104, 31, 0.10);
-  --wash-b: rgba(20, 125, 114, 0.08);
-  --decor-opacity: 0.35;
-  --noise-opacity: 0.035;
+  --grid-line: rgba(35, 28, 18, 0.055);
+  --grid-line-strong: rgba(35, 28, 18, 0.09);
+  --wash-a: rgba(184, 104, 31, 0.055);
+  --wash-b: rgba(20, 125, 114, 0.045);
+  --decor-opacity: 0.14;
+  --noise-opacity: 0.018;
   --noise-blend: multiply;
 
   --shadow-soft: 0 20px 50px -25px rgba(60, 45, 25, 0.28);
@@ -207,6 +207,7 @@ p { margin: 0; }
   position: relative;
   padding: 130px 0 100px;
   border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 93%, transparent);
 }
 .section:first-of-type { border-top: none; }
 
@@ -576,6 +577,7 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
 }
 .portrait-placeholder svg { width: 64px; height: 64px; color: var(--text-faint); }
 .portrait-placeholder span { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; }
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .corner-tag {
   position: absolute;
@@ -803,7 +805,8 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   overflow: hidden;
   border-bottom: 1px solid var(--border);
 }
-.project-thumb svg { width: 100%; height: 100%; }
+.project-thumb svg,
+.project-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .project-status {
   position: absolute;
@@ -912,7 +915,21 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   border: 1px solid var(--border);
   margin-bottom: 34px;
 }
-.detail-hero-thumb svg { width: 100%; height: 100%; }
+.detail-hero-thumb svg,
+.detail-hero-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.gallery-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
 
 .detail-eyebrow {
   font-family: var(--font-mono);
@@ -978,52 +995,6 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
 .video-placeholder svg { width: 34px; height: 34px; margin: 0 auto 10px; }
 
 /* ==========================================================================
-   ACHIEVEMENTS
-   ========================================================================== */
-.achievements-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-.achievement-card {
-  padding: 24px;
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-}
-.achievement-icon {
-  width: 40px; height: 40px;
-  border-radius: 9px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  display: grid; place-items: center;
-  color: var(--cyan);
-  flex-shrink: 0;
-}
-.achievement-icon svg { width: 19px; height: 19px; }
-.achievement-category {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-  margin-bottom: 6px;
-}
-.achievement-title { font-size: 15.5px; font-weight: 600; margin-bottom: 4px; }
-.achievement-detail { font-size: 13.5px; color: var(--text-dim); }
-.placeholder-badge {
-  display: inline-block;
-  margin-top: 8px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--copper-bright);
-  border: 1px solid var(--border-strong);
-  padding: 2px 8px;
-  border-radius: 999px;
-  letter-spacing: 0.05em;
-}
-
-/* ==========================================================================
    CONTACT
    ========================================================================== */
 .contact-grid {
@@ -1081,6 +1052,7 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
 .footer {
   border-top: 1px solid var(--border);
   padding: 56px 0 30px;
+  background: color-mix(in srgb, var(--bg) 93%, transparent);
 }
 .footer-top {
   display: flex;
@@ -1175,7 +1147,6 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
-  .achievements-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
@@ -1263,7 +1234,6 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
-      <a href="#achievements">Achievements</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-actions">
@@ -1283,7 +1253,6 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
   <a href="#projects">Projects</a>
   <a href="#skills">Skills</a>
   <a href="#experience">Experience</a>
-  <a href="#achievements">Achievements</a>
   <a href="#contact">Contact</a>
 </div>
 
@@ -1314,7 +1283,7 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
       <div class="hero-visual">
         <div id="heroTraces"></div>
         <span class="corner-tag tl">// FIG. 01</span>
-        <div class="portrait-frame">
+        <div class="portrait-frame" id="portraitFrame">
           <div class="portrait-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
             <span>PROFILE PHOTO — EDITABLE</span>
@@ -1422,26 +1391,11 @@ html:not([data-theme="light"]) .icon-sun { display: none; }
     </div>
   </section>
 
-  <!-- ============ ACHIEVEMENTS ============ -->
-  <section class="section" id="achievements">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="section-num mono">// 05</span>
-        <div class="section-titles">
-          <span class="section-kicker">Record</span>
-          <h2>Achievements &amp; Certifications</h2>
-          <p class="section-lede">Nothing invented here — these are placeholders to fill in as certifications, workshops, and results come in.</p>
-        </div>
-      </div>
-      <div class="achievements-grid" id="achievementsGrid"></div>
-    </div>
-  </section>
-
   <!-- ============ CONTACT ============ -->
   <section class="section" id="contact">
     <div class="container">
       <div class="section-head reveal">
-        <span class="section-num mono">// 06</span>
+        <span class="section-num mono">// 05</span>
         <div class="section-titles">
           <span class="section-kicker">Get In Touch</span>
           <h2>Contact</h2>
@@ -1611,7 +1565,7 @@ function icon(name) {
    ------------------------------------------------------------
    This is the single source of truth for every piece of
    content on the site: projects, skills, timeline, internships,
-   achievements, and profile info. The UI (js/app.js) never
+   and profile info. The UI (js/app.js) never
    hardcodes content — it just reads these objects and renders
    them. To add / edit / remove a project, edit the PROJECTS
    array below. Nothing else needs to change.
@@ -1625,6 +1579,7 @@ const PROFILE = {
   name: "Shiva Sharuk Kumar",
   title: "Mechatronics Engineering Student | Robotics & Automation Enthusiast | Developer",
   tagline: "I build innovative projects that combine mechanical systems, electronics, automation, IoT, and software to solve real-world problems.",
+  photo: "", // EDITABLE — path to your photo, e.g. "images/profile.jpg". Leave blank to keep the placeholder.
   email: "your.email@example.com",           // EDITABLE
   github: "https://github.com/yourusername", // EDITABLE
   linkedin: "https://linkedin.com/in/yourusername", // EDITABLE
@@ -1721,35 +1676,7 @@ const TIMELINE = [
   },
 ];
 
-/* ---------- ACHIEVEMENTS / CERTIFICATIONS ---------- */
-/* Empty / placeholder entries are clearly marked so no false claims are shown.
-   Delete the placeholder and add real entries as you earn them. */
-const ACHIEVEMENTS = [
-  {
-    type: "placeholder",
-    category: "Certifications",
-    title: "Add your certifications here",
-    detail: "e.g. online courses, PLC/automation certifications, embedded systems courses.",
-  },
-  {
-    type: "placeholder",
-    category: "Workshops",
-    title: "Add workshops attended here",
-    detail: "e.g. robotics workshops, IoT bootcamps, hardware design sessions.",
-  },
-  {
-    type: "placeholder",
-    category: "Hackathons & Competitions",
-    title: "Add hackathons / competitions here",
-    detail: "e.g. results, team projects, or ongoing participation.",
-  },
-  {
-    type: "placeholder",
-    category: "Publications & Awards",
-    title: "Add publications or awards here",
-    detail: "e.g. papers, patents, recognitions.",
-  },
-];
+
 
 /* ---------- PROJECTS ---------- */
 /* status: "Completed" | "In Progress" | "Prototype" | "Concept"
@@ -1766,6 +1693,8 @@ const PROJECTS = [
     status: "In Progress", // EDITABLE
     tech: ["ESP32", "Sensors", "C++", "IoT Dashboard"],
     image: "bridge",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/bridge.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/bridge-1.jpg", "images/projects/bridge-2.jpg"]
     shortDescription: "A sensor-based structural health monitoring system that tracks a bridge's condition in real time and flags anomalies before they become failures.",
     overview: "EDITABLE — describe what this system monitors (e.g. strain, vibration, tilt, load) and why it matters for structural safety.",
     problem: "EDITABLE — the real-world problem this addresses (e.g. delayed detection of structural stress/fatigue in bridges).",
@@ -1791,6 +1720,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["Arduino", "IR/Ultrasonic Sensors", "C++"],
     image: "maze",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/maze.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/maze-1.jpg", "images/projects/maze-2.jpg"]
     shortDescription: "An autonomous robot that navigates and solves a maze using sensor-based wall/path detection and a pathfinding algorithm.",
     overview: "EDITABLE — describe the robot's chassis, sensing approach, and the maze-solving strategy used.",
     problem: "EDITABLE — the challenge of autonomous navigation without human control.",
@@ -1816,6 +1747,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["ESP32", "OLED Display", "C++", "Wi-Fi"],
     image: "oled",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/oled.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/oled-1.jpg", "images/projects/oled-2.jpg"]
     shortDescription: "A compact desktop assistant built on ESP32 that displays live information (time, notifications, sensor data) on an OLED screen.",
     overview: "EDITABLE — describe what information the assistant displays and its use case.",
     problem: "EDITABLE — why a small always-on display assistant is useful.",
@@ -1841,6 +1774,8 @@ const PROJECTS = [
     status: "In Progress", // EDITABLE
     tech: ["JavaScript", "Node.js", "React", "WebSockets"],
     image: "games",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/games.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/games-1.jpg", "images/projects/games-2.jpg"]
     shortDescription: "A web platform where users can join rooms and play simple multiplayer games together in real time.",
     overview: "EDITABLE — describe the platform: what games, how rooms/matchmaking work.",
     problem: "EDITABLE — the need this platform fulfills (casual real-time multiplayer play in-browser).",
@@ -1866,6 +1801,8 @@ const PROJECTS = [
     status: "In Progress", // EDITABLE
     tech: ["Flutter", "Dart", "Firebase/API"],
     image: "ride",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/ride.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/ride-1.jpg", "images/projects/ride-2.jpg"]
     shortDescription: "A ride-booking mobile app concept allowing users to request rides, track drivers, and manage trips.",
     overview: "EDITABLE — describe app scope: rider flow, driver flow, or both.",
     problem: "EDITABLE — the transportation/booking problem being addressed.",
@@ -1891,6 +1828,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["Web Stack", "Database"],
     image: "hospital",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/hospital.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/hospital-1.jpg", "images/projects/hospital-2.jpg"]
     shortDescription: "A system for managing patient prescriptions digitally — reducing manual paperwork and prescription errors.",
     overview: "EDITABLE — describe the system's scope (doctor, pharmacist, patient views).",
     problem: "EDITABLE — issues with manual/paper-based prescription handling.",
@@ -1916,6 +1855,8 @@ const PROJECTS = [
     status: "Completed", // EDITABLE
     tech: ["Web Stack", "Database"],
     image: "pharmacy",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/pharmacy.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/pharmacy-1.jpg", "images/projects/pharmacy-2.jpg"]
     shortDescription: "A billing system for pharmacies to manage inventory, generate bills, and track sales.",
     overview: "EDITABLE — describe the system's core purpose and users.",
     problem: "EDITABLE — the inefficiency in manual pharmacy billing/inventory tracking.",
@@ -1941,6 +1882,8 @@ const PROJECTS = [
     status: "Concept", // EDITABLE
     tech: ["Python", "Machine Learning", "Sensors"],
     image: "predictive",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/predictive.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/predictive-1.jpg", "images/projects/predictive-2.jpg"]
     shortDescription: "A system that predicts equipment failure in advance using sensor data and machine learning, reducing unplanned downtime.",
     overview: "EDITABLE — describe the target equipment/process and the data used to predict failure.",
     problem: "EDITABLE — the cost of unplanned downtime / reactive maintenance.",
@@ -1966,6 +1909,8 @@ const PROJECTS = [
     status: "Completed",
     tech: ["React", "Vite", "Tailwind CSS", "Socket.IO", "Node.js", "Express", "PostgreSQL", "Firebase Auth"],
     image: "sinthana",
+    thumbnail: "", // EDITABLE — path to a real project photo, e.g. "images/projects/sinthana.jpg". Leave blank to keep the generated schematic thumbnail.
+    gallery: [], // EDITABLE — array of image paths for the project detail page, e.g. ["images/projects/sinthana-1.jpg", "images/projects/sinthana-2.jpg"]
     shortDescription: "A real-time, Mentimeter-style classroom polling platform — hosts run live multiple-choice, poll, true/false, rating, word-cloud, and Q&A questions while students join by code or QR and answer instantly from their phones.",
     overview: "\"Sinthana\" (சிந்தனை, Tamil for \"thought\") is a full-stack live audience-response app built from scratch: a React/Vite client for hosts and students, and a Node/Express/Socket.IO backend backed by PostgreSQL, with Google Sign-In through Firebase so every answer can be traced back to a named participant.",
     problem: "Classroom engagement tools like Mentimeter cover this workflow well but are closed, paid platforms. The goal was to build the same live-polling loop — host creates a question, a room full of students answer in real time, results appear instantly — end-to-end myself: authentication, real-time transport, scoring, and the database schema behind it.",
@@ -2013,7 +1958,7 @@ const CATEGORIES = [
 /* ============================================================
    APP LOGIC
    Reads content from data.js (PROFILE, SKILLS, TIMELINE,
-   ACHIEVEMENTS, PROJECTS, CATEGORIES) and icons from icons.js.
+   PROJECTS, CATEGORIES) and icons from icons.js.
    This file only renders — no content should be hardcoded here.
    ============================================================ */
 
@@ -2074,7 +2019,7 @@ const CATEGORIES = [
   }
 
   function updateActiveLink() {
-    const sections = ["home", "about", "projects", "skills", "experience", "achievements", "contact"];
+    const sections = ["home", "about", "projects", "skills", "experience", "contact"];
     let current = sections[0];
     for (const id of sections) {
       const el = document.getElementById(id);
@@ -2128,6 +2073,13 @@ const CATEGORIES = [
     sinthana: "poll",
   };
   function projectThumbSVG(project) {
+    if (project.thumbnail) {
+      return `<img src="${project.thumbnail}" alt="${project.title} thumbnail" loading="lazy" onerror="this.closest('.project-thumb, .detail-hero-thumb').innerHTML = window.__fallbackThumb('${project.id}')" />`;
+    }
+    return buildGeneratedThumb(project);
+  }
+
+  function buildGeneratedThumb(project) {
     const iconKey = THUMB_ICONS[project.image] || "cpu";
     // deterministic-ish gradient angle from id so cards feel distinct, not random
     let hash = 0;
@@ -2155,6 +2107,11 @@ const CATEGORIES = [
       </g>
     </svg>`;
   }
+
+  window.__fallbackThumb = function (id) {
+    const proj = PROJECTS.find((p) => p.id === id);
+    return proj ? buildGeneratedThumb(proj) : "";
+  };
 
   /* ---------------- Skills ---------------- */
   function renderSkills() {
@@ -2193,24 +2150,6 @@ const CATEGORIES = [
       </div>`
       )
       .join("");
-  }
-
-  /* ---------------- Achievements ---------------- */
-  function renderAchievements() {
-    const el = document.getElementById("achievementsGrid");
-    const catIcon = { Certifications: "award", Workshops: "layers", "Hackathons & Competitions": "trend", "Publications & Awards": "award" };
-    el.innerHTML = ACHIEVEMENTS.map(
-      (a, i) => `
-      <div class="achievement-card glass reveal" style="transition-delay:${i * 60}ms">
-        <div class="achievement-icon">${icon(catIcon[a.category] || "award")}</div>
-        <div>
-          <div class="achievement-category">${a.category}</div>
-          <div class="achievement-title">${a.title}</div>
-          <div class="achievement-detail">${a.detail}</div>
-          ${a.type === "placeholder" ? `<span class="placeholder-badge">Editable — add real entry</span>` : ""}
-        </div>
-      </div>`
-    ).join("");
   }
 
   /* ---------------- Projects: grid, filters, search ---------------- */
@@ -2301,6 +2240,16 @@ const CATEGORIES = [
     return detailBlock(title, `<ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul>`);
   }
 
+  function galleryBlock(p) {
+    if (p.gallery && p.gallery.length) {
+      const imgs = p.gallery
+        .map((src, i) => `<img src="${src}" alt="${p.title} photo ${i + 1}" loading="lazy" class="gallery-img" />`)
+        .join("");
+      return detailBlock("Gallery", `<div class="gallery-grid">${imgs}</div>`);
+    }
+    return detailBlock("Gallery", `<div class="gallery-placeholder">${icon("image")}<div style="margin-top:10px">Editable — add project photos here</div></div>`);
+  }
+
   function renderProjectDetail(id) {
     const overlay = document.getElementById("detailOverlay");
     const p = PROJECTS.find((x) => x.id === id);
@@ -2330,7 +2279,7 @@ const CATEGORIES = [
       ${listBlock("Hardware Used", p.hardware)}
       ${listBlock("Software Used", p.software)}
       ${detailBlock("How It Works", `<p>${p.howItWorks}</p>`)}
-      ${detailBlock("Gallery", `<div class="gallery-placeholder">${icon("image")}<div style="margin-top:10px">Editable — add project photos here</div></div>`)}
+      ${galleryBlock(p)}
       ${detailBlock("Demo Video", `<div class="video-placeholder">${icon("play")}<div>Editable — embed a demo video link here</div></div>`)}
       ${detailBlock("Challenges", `<p>${p.challenges}</p>`)}
       ${detailBlock("Future Improvements", `<p>${p.future}</p>`)}
@@ -2409,6 +2358,11 @@ const CATEGORIES = [
       .join("");
 
     document.getElementById("footerTagline").textContent = PROFILE.tagline;
+
+    if (PROFILE.photo) {
+      const frame = document.getElementById("portraitFrame");
+      frame.innerHTML = `<img src="${PROFILE.photo}" alt="${PROFILE.name}" loading="lazy" />`;
+    }
   }
 
   /* ---------------- Init ---------------- */
@@ -2420,7 +2374,6 @@ const CATEGORIES = [
     initNav();
     renderSkills();
     renderTimeline();
-    renderAchievements();
     renderFilterChips();
     renderProjects();
     initProjectSearch();
