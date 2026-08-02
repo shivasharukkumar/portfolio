@@ -24,13 +24,12 @@
   /* ---------------- Theme ---------------- */
   function initTheme() {
     const saved = store.get("theme", null);
-    const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-    const theme = saved || (prefersLight ? "light" : "dark");
+    const theme = saved || "light";
     document.documentElement.setAttribute("data-theme", theme);
   }
   function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
-    const next = current === "light" ? "dark" : "light";
+    const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    const next = current === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     store.set("theme", next);
   }
@@ -381,16 +380,59 @@
   function initContactForm() {
     const form = document.getElementById("contactForm");
     const status = document.getElementById("formStatus");
-    form.addEventListener("submit", (e) => {
+    const submitBtn = form.querySelector("button[type='submit']");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
-      // EDITABLE: wire this up to a real endpoint (Formspree, EmailJS, your own API, etc.)
-      status.textContent = "Message ready — connect this form to your email service to send it.";
-      status.classList.add("is-visible");
-      form.reset();
+
+      const data = new FormData(form);
+      const name = (data.get("name") || "").trim();
+      const email = (data.get("email") || "").trim();
+      const subject = (data.get("subject") || "").trim();
+      const message = (data.get("message") || "").trim();
+
+      // No endpoint configured — fall back to opening the visitor's email app with everything
+      // pre-filled, so the form still works with zero setup.
+      if (!PROFILE.formEndpoint) {
+        const body = `${message}\n\n— ${name} (${email})`;
+        const mailto = `mailto:${encodeURIComponent(PROFILE.email)}?subject=${encodeURIComponent(subject || "Portfolio contact form")}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+        status.textContent = "Opening your email app to send this — no endpoint is configured yet (see js/data.js).";
+        status.classList.remove("is-error");
+        status.classList.add("is-visible");
+        return;
+      }
+
+      const originalLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+      status.classList.remove("is-visible", "is-error");
+
+      try {
+        const res = await fetch(PROFILE.formEndpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: data,
+        });
+
+        if (res.ok) {
+          status.textContent = "Message sent — thanks for reaching out, I'll get back to you soon.";
+          status.classList.add("is-visible");
+          form.reset();
+        } else {
+          throw new Error("Form endpoint returned an error");
+        }
+      } catch (err) {
+        status.textContent = "Something went wrong sending that. Please email me directly instead.";
+        status.classList.add("is-visible", "is-error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
     });
   }
 
@@ -482,6 +524,76 @@
     }
   }
 
+  /* ---------------- Ambient sound: plays audio/ambient-loop.(ogg|mp3) ----------------
+     A real, downloadable audio file — a calm, seamlessly-looping ambient pad rendered
+     to audio/ambient-loop.wav (lossless master) and encoded to .ogg (primary) and .mp3
+     (fallback) for the <audio> element in index.html. Nothing here is copyrighted: the
+     loop was synthesized from scratch (see the generation notes in the audio/ folder's
+     README mention) so there's nothing to license or attribute. This function just
+     handles the click-to-play/pause toggle and a smooth volume fade in both directions
+     instead of an abrupt on/off. */
+  function initAmbientSound() {
+    const btn = document.getElementById("ambientToggle");
+    const audio = document.getElementById("ambientAudio");
+    if (!btn || !audio) return;
+
+    btn.innerHTML = `<span class="ambient-icon">${icon("musicOff")}</span><span class="ambient-rings" aria-hidden="true"><span></span><span></span></span>`;
+    const iconEl = () => btn.querySelector(".ambient-icon");
+
+    const TARGET_VOLUME = 0.35;
+    const FADE_MS = 1400;
+    audio.volume = 0;
+
+    let isPlaying = false;
+    let fadeFrame = null;
+
+    function fade(to, onDone) {
+      if (fadeFrame) cancelAnimationFrame(fadeFrame);
+      const from = audio.volume;
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - start) / FADE_MS);
+        audio.volume = from + (to - from) * t;
+        if (t < 1) {
+          fadeFrame = requestAnimationFrame(step);
+        } else {
+          fadeFrame = null;
+          if (onDone) onDone();
+        }
+      }
+      fadeFrame = requestAnimationFrame(step);
+    }
+
+    function start() {
+      if (isPlaying) return;
+      const playPromise = audio.play();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => { /* blocked without a user gesture; button click always provides one */ });
+      }
+      fade(TARGET_VOLUME);
+      isPlaying = true;
+      btn.classList.add("is-playing");
+      btn.setAttribute("aria-pressed", "true");
+      btn.setAttribute("aria-label", "Pause calm background ambience");
+      iconEl().innerHTML = icon("musicOn");
+    }
+
+    function stop() {
+      if (!isPlaying) return;
+      fade(0, () => audio.pause());
+      isPlaying = false;
+      btn.classList.remove("is-playing");
+      btn.setAttribute("aria-pressed", "false");
+      btn.setAttribute("aria-label", "Play calm background ambience");
+      iconEl().innerHTML = icon("musicOff");
+    }
+
+    btn.addEventListener("click", () => {
+      if (isPlaying) stop();
+      else start();
+    });
+  }
+
   /* ---------------- Init ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
     initTheme();
@@ -497,6 +609,7 @@
     initContactForm();
     bindProfile();
     initReveal();
+    initAmbientSound();
 
     document.querySelectorAll("[data-close-detail]").forEach((el) =>
       el.addEventListener("click", () => {

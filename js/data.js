@@ -23,6 +23,12 @@ const PROFILE = {
   linkedin: "https://www.linkedin.com/in/shivasharuk/", // EDITABLE
   resumeUrl: "#",                             //  link to your resume PDF
   location: "Tamil Nadu, India",              // EDITABLE
+  // EDITABLE — paste a Formspree endpoint here (e.g. "https://formspree.io/f/abcdwxyz") to make
+  // the contact form actually send you an email. Get one free at https://formspree.io — sign up,
+  // create a new form, point it at your email, and paste the endpoint URL it gives you here.
+  // Leave blank and the form will fall back to opening the visitor's email app instead (mailto),
+  // which still works with zero setup but requires the visitor to hit send themselves.
+  formEndpoint: "",
   about: `I'm a Mechatronics Engineering student who likes taking a problem apart until
   it's mechanical, electrical, and software pieces — then rebuilding it as something
   that actually works on a bench, not just on paper. Most of what I build sits at the
