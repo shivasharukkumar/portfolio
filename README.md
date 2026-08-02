@@ -110,18 +110,17 @@ Vercel/Cloudflare/GitHub Pages to auto-rebuild).
 
 ## Notes
 
-- A small round button in the bottom-right corner toggles a calm background ambience —
-  a real, seamlessly-looping audio file (`audio/ambient-loop.ogg`, with an `.mp3` fallback
-  for browsers that don't support Ogg). It's an original synthesized ocean wave ambience —
-  layered filtered noise with a natural swell/recede rhythm — with no
-  copyright, so there's nothing to license or credit. Swap it for your own track any time —
-  just replace the files in `audio/` (keep the same filenames, or update the `<source>`
-  paths in `index.html`). It only starts on a click, per browser autoplay rules, and fades
-  in/out smoothly rather than clicking on/off. To remove it entirely, delete the `<audio>`
-  element and `#ambientToggle` button in `index.html` and the `initAmbientSound()`
-  call/function in `js/app.js`.
-  - `audio/ambient-loop.wav` is the uncompressed master (larger, kept for reference/re-encoding)
-    and isn't linked from the page — only the `.ogg`/`.mp3` versions are used.
+- A small round button in the bottom-right corner toggles a calm ocean-wave background
+  ambience — a real recorded audio clip (`audio/ambient-loop.ogg`, with an `.mp3` fallback
+  for browsers that don't support Ogg), lightly reprocessed with a short crossfade at the
+  loop point so it repeats smoothly rather than jumping abruptly. **This audio was supplied
+  by you** — double-check you have the rights to use it on a public site (its filename
+  suggests it came from a stock/sample library, so confirm the license terms allow this use)
+  before publishing. Swap it for a different track any time — just replace the files in
+  `audio/` (keep the same filenames, or update the `<source>` paths in `index.html`). It
+  only starts on a click, per browser autoplay rules, and fades in/out smoothly rather than
+  clicking on/off. To remove it entirely, delete the `<audio>` element and `#ambientToggle`
+  button in `index.html` and the `initAmbientSound()` call/function in `js/app.js`.
 
 - All project technical details in `data.js` are placeholders marked `EDITABLE` — replace them with
   your real project write-ups. No fake achievements or statistics have been included anywhere.
